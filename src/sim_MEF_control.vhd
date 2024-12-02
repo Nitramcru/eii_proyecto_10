@@ -2,24 +2,23 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use std.env.finish;
-use work.util_sim.all; 
 
-entity sim_Funcion_Menor is
-end sim_Funcion_Menor;
+entity sim_MEF_control is
+end sim_MEF_control;
 
-architecture sim of sim_Funcion_Menor is
-  component Funcion_Menor is
+architecture sim of sim_MEF_control is
+  component MEF_control is
     port (
       A : in  std_logic;
       B : in  std_logic;
       Y : out std_logic
     );
-  end component; -- Funcion_Menor
+  end component; -- MEF_control
   signal entradas : std_logic_vector (1 downto 0);
   signal salida : std_logic;
 begin
   -- Dispositivo bajo prueba
-  dut : Funcion_Menor port map (A=>entradas(1),B=>entradas(0),Y=>salida);
+  dut : MEF_control port map (A=>entradas(1),B=>entradas(0),Y=>salida);
 
   excitaciones: process
   begin

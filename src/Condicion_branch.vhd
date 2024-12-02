@@ -13,7 +13,7 @@ architecture arch of Condicion_branch is
 
   with funct3 select
   Z-branch <= "1" when "000" | "101" | "111",  -- beq, bge, bgev
-             "0" when others;                  -- beq, bge, bgev
+              "0" when others;                 -- beq, bge, bgev
   
   end with
 end arch;
