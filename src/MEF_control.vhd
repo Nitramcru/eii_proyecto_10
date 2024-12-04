@@ -12,6 +12,51 @@ entity MEF_control is
 end MEF_control; 
 
 architecture arch of MEF_control is
+  type estado_t is (
+        ESPERA,      -- Espera que la RAM Lea la instrucción a cargar
+        CARGA        -- Carga una instrucción y avanta el PC
+        DECODIFICA   -- Carga los valores de R51, 112.
+        EJECUTA      -- Realiza un calculo| Carga RS2 en memoria| Lee dato de memoria
+        ALMACENA     -- Almacena un resultado en RD o el destino de un branch en PC
+);
+
+signal estado: estado-t; 
+signal estado-sig: estando_t;
+
 begin
-  Y <= A and B;
+  
+  
+mem_estado: process (clk)
+bagin
+ if rising_edge (clk) then
+    if reset then
+	    estado <= espera;
+    else
+	    estado <= estado_sig;
+    end if;
+  end if;
+
+end process;
+    
+
+L_E_S: process (all)
+
+  begin
+
+  case (estado) is
+  
+  when ESPERA => estado_sig <= CARGA; 
+
+  when CARGA => estado_sig<= DECODIFICA;
+  
+  when DECODIFICA => estalo_sig <= EJECUTA;
+
+  when EJECUTA => estado-sig <= ALMACEMA;
+  
+  when ALMACENA => estado-sig <= ESPERA when hab_pc else CARGA;
+  
+  end case;
+  
+end process;
+
 end arch;
