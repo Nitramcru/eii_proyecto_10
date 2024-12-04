@@ -13,15 +13,15 @@ end ALU;
 architecture arch of ALU is
   Component fn_cero is
     Port (
-    A: in std_logic_vecter (31 dewato 0);
-    Z: out sto-logie
+    A: in std_logic_vector (31 downto 0);
+    Z: out std_logic
     );
     end component;
 
   Component fn_and is
     Port (
     A, B: in std_logic_vector (31 de wate 0)
-    Y: out std_logic_vecter (31 downto 0)
+    Y: out std_logic_vector (31 downto 0)
     );
     end component;
 
@@ -43,7 +43,7 @@ architecture arch of ALU is
     end component;
 
     y_and, y_or, y_xor, y_suma_resta: std_logic_vector (31 downto 0);
-    y_menor, y_desp_izq, y_desp_der, y_sel : std_logic_vector (31 downto 0);
+    y_menor, y_desp_izq, y_desp_der, y_Sel : std_logic_vector (31 downto 0);
     resta, menor_con_signo, desp_con_signo: std_logic;
 begin
   
@@ -55,7 +55,7 @@ begin
 
   U3: fn_menor port map(
   A=>A, B=>B, con_signo => menor_con_signo, Y=>Y_menor (0)); 
-  Y_menor (31 downto 1) <= (other => 'o');
+  Y_menor (31 downto 1) <= (other => '0');
 
   U4: fn_desp_der port map (A=>A, B=>B (4 downto 0) 
 	    con_signo=> desp_con_signo, Y => Y_con_signo);
@@ -65,7 +65,7 @@ begin
   U7: fn_and port map (A=>A, B=>B, Y => Y_and);
 
   with sel select
-  y-sel <= y_suma_resta when "0000" | "0001";
+  y_sel <= y_suma_resta when "0000" | "0001";
            y_desp_izq   when "0010" | "0011";
            y_menor      when "0100" | "0101" | "0110" | "0111";
            y_desp_der   when "1010" | "1011";	
@@ -75,7 +75,7 @@ begin
 
 
 
-  U8: fr-cero port map (A=> Y_sel, z=>z);
+  U8: fn_cero port map (A=> Y_sel, z=>z);
       resta => sel (0) ;
       menor_con_signo <= not sel (1);
       desp_con_signo <= sel (0);

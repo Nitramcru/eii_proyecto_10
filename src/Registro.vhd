@@ -6,6 +6,7 @@ entity Registro is
     clk : in  std_logic;
     D :   in  std_logic_vector (31 downto 0);
     hab:  in  std_logic;
+    reset:  in  std_logic;
     Q :   out std_logic_vector (31 downto 0)
   );
 end Registro;
@@ -15,9 +16,12 @@ begin
   U1: process (clk)
   begin
     if rising_edge (clk) then
-      if hab = '1' then
+      if reset then
+        0 <= 32 x "0";
+
+      elsif hab then
     Q <= 0;
+      end if;
     end if;
-  end if;
   end process;
 end arch;

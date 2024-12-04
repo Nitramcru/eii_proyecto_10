@@ -20,7 +20,7 @@ architecture arch of ConjuntodeRegistros_32x32_b is
     puertos: process (clk)
     begin
       if rising_edge (clk) then
-        if hab_escritura ='1' then 
+        if hab_escritura ='1' and dir_escritura /= 5 x "0" then 
            mem(to_integer (unsigned(dir_escritura))) <= dat_escritura;
         end if;
 
