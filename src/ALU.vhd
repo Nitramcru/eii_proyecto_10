@@ -20,7 +20,7 @@ architecture arch of ALU is
 
   Component fn_and is
     Port (
-    A, B: in std_logic_vector (31 de wate 0)
+    A, B: in std_logic_vector (31 downto 0);
     Y: out std_logic_vector (31 downto 0)
     );
     end component;
@@ -45,6 +45,7 @@ architecture arch of ALU is
     y_and, y_or, y_xor, y_suma_resta: std_logic_vector (31 downto 0);
     y_menor, y_desp_izq, y_desp_der, y_Sel : std_logic_vector (31 downto 0);
     resta, menor_con_signo, desp_con_signo: std_logic;
+    
 begin
   
   U1: fn_suma_resta port map (
@@ -54,14 +55,16 @@ begin
       A=>A, B=B(4 downto 0), Y=>Y_desp_izq );
 
   U3: fn_menor port map(
-  A=>A, B=>B, con_signo => menor_con_signo, Y=>Y_menor (0)); 
-  Y_menor (31 downto 1) <= (other => '0');
+    A=>A, B=>B, con_signo => menor_con_signo, Y=>Y_menor (0)); 
+    Y_menor (31 downto 1) <= (other => '0');
 
   U4: fn_desp_der port map (A=>A, B=>B (4 downto 0) 
 	    con_signo=> desp_con_signo, Y => Y_con_signo);
 
   U5: fn_xor port map (A=>A, B=>B, Y => Y_xor); 
+
   U6: fn_or port map (A=>A, B=>B, Y => Y_or); 
+
   U7: fn_and port map (A=>A, B=>B, Y => Y_and);
 
   with sel select
