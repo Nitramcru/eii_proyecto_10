@@ -46,24 +46,76 @@ begin
     B_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
 
     Sel_tb <= "0000" ;
-
     wait for 1 ns;
-    
 
-    -- Caso 2: AND entre A y B
+    -- Caso 2: Resta de dos números
     A_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
     B_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
 
     Sel_tb <= "0001" ;
+    wait for 1 ns;
     
-    -- Caso 3: OR entre A y B
-    
-    -- Caso 4: Desplazamiento a la derecha
-    
+
+    -- Caso 3: AND entre A y B
+    A_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
+    B_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
+
+    Sel_tb <= "1110" ;
+    wait for 1 ns;
+    Sel_tb <= "1111" ;
+    wait for 1 ns;
+
+
+    -- Caso 4: OR entre A y B
+    A_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
+    B_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
+
+    Sel_tb <= "1100" ;
+    wait for 1 ns;
+    Sel_tb <= "1101" ;
+    wait for 1 ns;
+
+    -- Caso 4: XOR entre A y B
+    A_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
+    B_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
+
+    Sel_tb <= "1000" ;
+    wait for 1 ns;
+    Sel_tb <= "1001" ;
+    wait for 1 ns;
+
 
     -- Caso 5: Menor entre A y B
-    
+    A_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
+    B_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
 
+    Sel_tb <= "0111" ;
+    wait for 1 ns;
+
+    -- Caso 5: Mayor entre A y B
+    A_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
+    B_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
+
+    Sel_tb <= "0011" ;
+    wait for 1 ns;
+
+
+    -- Caso 4: Desplazamiento a la derecha 
+    A_tb <= 32x"80000000" ; 
+    B_tb <= aleatorio.genera_vector_en_rango(0,31, 32) ; 
+
+    Sel_tb <= "1010" ;
+    wait for 1 ns;
+
+    -- Caso 4: Desplazamiento a la izquierda
+    A_tb <= 32x"80000000" ; 
+    B_tb <= aleatorio.genera_vector_en_rango(0,31, 32) ; 
+
+    Sel_tb <= "1010" ;
+    wait for 1 ns;
+
+
+    
 
       
     finish;

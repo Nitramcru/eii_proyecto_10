@@ -9,9 +9,15 @@ end sim_CPU;
 architecture sim of sim_CPU is
   component CPU is
     port (
-      A : in  std_logic;
-      B : in  std_logic;
-      Y : out std_logic
+
+      reset : in  std_logic;
+      clk : in  std_logic;
+      dat_lectura : in  std_logic_vector (31 downto 0);
+
+      dir : out std_logic (31 downto 2);
+      dat_escritura : out std_logic (31 downto 0);
+      hab_escritura : out std_logic
+
     );
   end component; -- CPU
   signal entradas : std_logic_vector (1 downto 0);

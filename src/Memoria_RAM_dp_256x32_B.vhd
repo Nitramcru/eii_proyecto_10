@@ -3,6 +3,12 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 entity Memoria_RAM_dp_256x32_B is
+  generic(
+   constant archivo : string :=""
+  
+        );
+
+
   port (
     clk_escritura :in std_logic;
     dir_escritura :in std_logic_vector (7 downto 0);
@@ -18,8 +24,37 @@ entity Memoria_RAM_dp_256x32_B is
 end Memoria_RAM_dp_256x32_B;
 
 architecture arch of Memoria_RAM_dp_256x32_B is
+
 type mem_t is array (0 to 255) of std_logic_vector (31 downto 0);
-signal mem: men_t;
+
+-- Función impura para inicializar la memoria
+
+impure function inicializa (archivo: string) return mem_t is
+    file origen:text;
+    variable linea:line;
+    variable contenido: mem_t;
+
+    begin 
+    if archivo= "" then
+      return contenido;
+
+    else
+      file_open (origen, archivo, READ_MODE);
+      for k in contenido'range loop
+        exit when endfile (origen);
+        readline(origen,linea);
+        hread (linea, contenido(k));
+
+        end loop;
+        file_close (origen);
+        end if;
+        return contenido;
+        end function;
+
+  
+signal mem: mem_t:= inicializa (archivo);
+
+
 begin
   
   puerto_lectura : process (clk_lectura)

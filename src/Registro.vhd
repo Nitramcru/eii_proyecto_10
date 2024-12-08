@@ -17,10 +17,9 @@ begin
   begin
     if rising_edge (clk) then
       if reset then
-        0 <= 32 x "0";
-
+        Q <= 32x"0";
       elsif hab then
-    Q <= 0;
+        Q <= 0;
       end if;
     end if;
   end process;
