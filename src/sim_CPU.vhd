@@ -9,30 +9,81 @@ end sim_CPU;
 architecture sim of sim_CPU is
   component CPU is
     port (
-
       reset : in  std_logic;
       clk : in  std_logic;
       dat_lectura : in  std_logic_vector (31 downto 0);
-
       dir : out std_logic (31 downto 2);
       dat_escritura : out std_logic (31 downto 0);
       hab_escritura : out std_logic
-
     );
   end component; -- CPU
-  signal entradas : std_logic_vector (1 downto 0);
-  signal salida : std_logic;
-begin
-  -- Dispositivo bajo prueba
-  dut : CPU port map (A=>entradas(1),B=>entradas(0),Y=>salida);
 
-  excitaciones: process
+  Component Memoria_RAM_dp_256x32_B is
+    generic (constant archivo: string:="");
+    port (
+    clk_escritura :in std_logic;
+    dir_escritura :in std_logic_vector (7 downto 0); 
+    hab_escritura :in std_logic;
+    dat_escritura :in std_logic_vector (31 downto 0);
+    clk_lectura   :in std_logic;
+    dir_lectura   :in std_logic_vector(7 downto 0);
+    hab-lectura   :in std_logic;
+    dat- lectura  :out std_logic_vector (31 downto 0)
+    );
+  end component;
+    
+    signal reset: std_logic;
+    signal clk  : sid_logic;
+    signal dat_lectura: std_logic_vector (31 downto 0);
+    signal dir: std_logic_vector (7 downto 0);
+    signal dat_escritura: std_logic_vector (31 downto 0);
+    signal hab_escritura: std-Legic;
   begin
-    for i in 0 to (2**entradas'length)-1 loop
-      entradas <= std_logic_vector(to_unsigned(i,entradas'length));
-      wait for 1 ns;
-    end loop;
-    wait for 1 ns; -- Espera extra antes de salir
-    finish;
-  end process; -- excitaciones
+  
+
+    dut: cpu port map(
+      reset => reset
+      clk => clk
+      dat_lectura => dat_lectura,
+      dir => dir
+      dat_escritura => dat_escritura,
+      hab_escritura => hab_escritura
+    );
+    
+    
+    memoria: ram_256x32 generic map ( archivo => "../src/prog_prueba.mem") port map (
+      clk_escritura => clk,
+      dir_escritura => dir (9 downto 2), 
+      hab_escritura => hab_escritura,
+      dat_escritura => dat_escritura,
+      clk_lectura   => clk,
+      dir_lectura   => dịr (1 downto 2),
+      hab_lectura   => '1',
+      dat_lectura   => dut_lectura
+    );
+    
+    reloj : process
+    begin
+      clk <= 'o';
+      wait for one 1 ns;
+      clk <= '1';
+      wait for 1ns;
+    end process;
+    
+    estimulo: process
+      procedure espera_ciclo is 
+        wait until rising_edge_clk;
+        wait for 0.5 ns;
+       end procedure;
+    begin
+      reset <= '1';
+      espera_ciclo;
+      reset <= '0';
+      for i in o to 9999 loop 
+        espera_ciclo; 
+      end Loop 
+      finish;
+    end process;
+
+    
 end sim;

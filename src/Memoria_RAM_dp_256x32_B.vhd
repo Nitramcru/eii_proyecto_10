@@ -5,7 +5,6 @@ use IEEE.numeric_std.all;
 entity Memoria_RAM_dp_256x32_B is
   generic(
    constant archivo : string :=""
-  
         );
 
 
@@ -36,7 +35,8 @@ impure function inicializa (archivo: string) return mem_t is
 
     begin 
     if archivo= "" then
-      return contenido;
+       contenido:= (others => 32x"0");
+       return contenido;
 
     else
       file_open (origen, archivo, READ_MODE);
@@ -69,6 +69,7 @@ begin
 
   puerto_escritura: process (clk_escritura)
       variable dir, pos :integer;
+      return contenido;
 
     begin
         if rising_edge (clk_escritura) then

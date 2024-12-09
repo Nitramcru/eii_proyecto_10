@@ -99,7 +99,6 @@ begin
     Sel_tb <= "0011" ;
     wait for 1 ns;
 
-
     -- Caso 4: Desplazamiento a la derecha 
     A_tb <= 32x"80000000" ; 
     B_tb <= aleatorio.genera_vector_en_rango(0,31, 32) ; 

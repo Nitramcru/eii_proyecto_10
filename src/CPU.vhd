@@ -100,9 +100,227 @@ Signal sel_alv: std_logic_vector (3 downto 0);
 signal z_branch, z, hab_pc : std_logic;
 signal Y_alu, Y: std_logic_vector (31 downto 0);
 
+signal op1, op2: std_logic_vector (31 downto 0);
 
 begin
- .
- .
- .
+  hab_pc <= esc_pc or (branch and (Z xnor Z_branch));
+
+  R_pc: registro 32 port map (
+          clk=> clk,
+          reset=> reset,
+          hab => hab_pc,
+          D=> Y,
+          Q=> рс
+      );
+  
+  dir <= PC when sel_dir='0' else Y;
+  
+  hab_escritura <= esc_mem;
+  dat_escritura <= rs2;
+  
+  R_pc_instr: registro32 port map ( 
+      clk => clk, 
+      reset => '0', 
+      hab => esc_instr,
+      D => pc,
+      Q => pc_instr
+  );
+
+  R_instr: registro 32 port map(
+      clk => clk,
+      reset => '0',
+      hab => esc_instr,
+      D => dat_lectura, 
+      Q=> instr
+  );
+
+  U_Control: MEF_control port map(
+
+      clk           => clk,
+      reset         => reset,
+      hab_pc        => hab_pc,
+      op            => instr(6 downto 0),
+      esc_pc        => esc_pc,
+      branch        => branch,
+      sel_dir       => sel_dir,
+      esc_mem       => esc_mem,
+      esc_instr     => esc_instr,
+      esc_reg       => esc_reg,
+      sel_inmediato => sel_inmediato,
+      modo_alu      => modo_alu,
+      sel_op1       => sel_op1,
+      sel_op2       => sel_op2,
+      sel_Y         => sel_Y
+  );
+
+
+u_registros: conjunto_registros port map (
+	clk=>clk
+	dir-1 => instr (19 downto 15),
+	dir_2 => instr (24 downto 20),
+	dir_escritura => instr (11 downto 7),
+	hab_escritura => esc_reg,
+	dat_escritura => Y,
+	dat-1=> rs1,
+	dat_2=> rs2
+	);
+
+U_inmediato: valor_inmediato port map (
+		instr => instr (31 downto 7),
+		sel => sel_inmediato,
+		inmediato => inmediato
+);
+
+
+u_sel_alu: control_alu port_map (
+	funct3 => instr (14 downto 12),
+	funct7_5 =>  instr(30),
+	modo => modo_alu,
+	fn_alu=> sel_alu
+);
+
+
+U_Z_branch: condicion_branch port map(
+	    funct3 => instr(14 downto 12),
+	    z_branch => Z_branch
+);
+
+
+mux_op1: with sel_op1 select
+	op1 <= pc when "00",
+	       pc_instr when "01",
+	       rs1  when others; --10
+
+
+-- end mux_op1
+
+mux_op2: with sel_op2 select
+  op1 <= rs2 when "00",
+  inmediato when "01",
+  32x"4" when others; -- 10
+
+--end mux_op2
+
+u_alv: al
+port map (
+A
+=>
+Op 1,
+B
+→
+0121
+Sel
+⇒
+sel-alv,
+Y_alv,
+Y
+Z
+R-y-alvor: registro 32 port map
+clk clk, reser '0', '1',
+yol,
+D
+→ Y.alv,
+→ Y-aw.r
+);
+mux_y: with
+sel. Y select
+YE dat - lectura when "00",
+Y-ah
+when "01",
+Y-alu-r
+when others;
+--
+10
+-- end mux-y
+end arch;
+u_alv: al
+port map (
+A
+=>
+Op 1,
+B
+→
+0121
+Sel
+⇒
+sel-alv,
+Y_alv,
+Y
+Z
+R-y-alvor: registro 32 port map
+clk clk, reser '0', '1',
+yol,
+D
+→ Y.alv,
+→ Y-aw.r
+);
+mux_y: with
+sel. Y select
+YE dat - lectura when "00",
+Y-ah
+when "01",
+Y-alu-r
+when others;
+--
+10
+-- end mux-y
+end arch;
+u_alv: al
+port map (
+A
+=>
+Op 1,
+B
+→
+0121
+Sel
+⇒
+sel-alv,
+Y_alv,
+Y
+Z
+R-y-alvor: registro 32 port map
+clk clk, reser '0', '1',
+yol,
+D
+→ Y.alv,
+→ Y-aw.r
+);
+mux_y: with
+sel. Y select
+YE dat - lectura when "00",
+Y-ah
+when "01",
+Y-alu-r
+when others;
+--
+10
+-- end mux-y
+end arch;
+
+u_alv: alu port map (
+	A => op1,
+	B => op2,
+	sel =>sel_alu,
+	Y =>Y_alv,
+	Z=> Z
+);
+
+R_y_alu_r: registro 32 port map(
+	clk => clk, 
+	reset => '0',
+ 	rob =>'1',
+	D => Y_alu,
+	q => Y_alu_r
+);
+
+
+mux_y: with sel_Y select
+  Y <= dat_lectura when "00",
+             Y_alu when "01",
+           Y_alu_r when others;--10
+-- end mux_y
+end arch;
+
+
 end arch;
