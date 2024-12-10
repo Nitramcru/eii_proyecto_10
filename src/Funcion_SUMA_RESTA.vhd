@@ -18,7 +18,6 @@ architecture arch of Funcion_SUMA_RESTA is
 begin
 
   Suma  <= std_logic_vector(unsigned(entrada1) + unsigned(entrada2));
-
   Resta <= std_logic_vector(unsigned(entrada1) - unsigned(entrada2));
 
   salida <= Suma when Seleccion = '0' else Resta;

@@ -58,7 +58,7 @@ architecture sim of sim_CPU is
       hab_escritura => hab_escritura,
       dat_escritura => dat_escritura,
       clk_lectura   => clk,
-      dir_lectura   => dịr (2 downto 1),
+      dir_lectura   => dir (2 downto 1),
       hab_lectura   => '1',
       dat_lectura   => dut_lectura
     );
@@ -66,26 +66,24 @@ architecture sim of sim_CPU is
     reloj : process
       begin
       clk <= '0';
-      wait for one 1 ns;
+      wait for 1 ns;
       clk <= '1';
       wait for 1 ns;
     end process;
     
     estimulo: process
-      procedure espera_ciclo is 
+      procedure espera_ciclo is
+      begin 
         wait until rising_edge(clk);
         wait for 0.5 ns;
-       end procedure;
-       
-      begin
+      end procedure; 
+    begin
       reset <= '1';
       espera_ciclo;
       reset <= '0';
       for i in 0 to 9999 loop 
         espera_ciclo; 
-      end Loop 
+      end loop; 
       finish;
     end process;
-
-    
 end sim;

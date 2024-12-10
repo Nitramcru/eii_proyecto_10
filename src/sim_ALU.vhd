@@ -56,7 +56,7 @@ begin
     wait for 1 ns;
     
     -- Caso 3: Desplazamiento a la izquierda
-    A_tb <= 32x"80000000" ; 
+    A_tb <= 32x"1";
     B_tb <= aleatorio.genera_vector_en_rango(0,31, 32) ; 
 
     Sel_tb <= "0010" ;
@@ -88,18 +88,12 @@ begin
 
     Sel_tb <= "1010" ;
     wait for 1 ns;
-    Sel_tb <= "1011" ;
-    wait for 1 ns;
-
     -- Caso 7: Desplazamiento a la derecha (con extension de signo)
-    A_tb <= 32x"80000000" ; 
-    B_tb <= aleatorio.genera_vector_en_rango(0,31, 32) ; 
 
     Sel_tb <= "1011" ;
     wait for 1 ns;
-    Sel_tb <= "1010" ;
-    wait for 1 ns;
 
+  
     -- Caso 8: XOR entre A y B
     A_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
     B_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
@@ -125,19 +119,8 @@ begin
     Sel_tb <= "1111" ;
     wait for 1 ns;
     Sel_tb <= "1110" ;
-    wait for 1 ns;
-
-
-    
-
-    
-
-    
-
-    
-      
+    wait for 1 ns;    
     finish;
-
 
   end process; -- excitaciones
 end sim;

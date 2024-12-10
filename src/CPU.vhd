@@ -172,7 +172,7 @@ U_inmediato: valor_inmediato port map (
 
 
 u_sel_alu: control_alu 
-port_map (
+port map (
 	funct3 => instr (14 downto 12),
 	funct7_5 => instr(30),
 	modo => modo_alu,

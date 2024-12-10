@@ -96,16 +96,16 @@ begin
   
   U2: Funcion_desplaza_izq port map   (A=>A, B=>B(4 downto 0), Y=>Y_desp_izq );
   
-  U3: Funcion_Menor port map      (A=>A, B=>B, con_signo => menor_con_signo, Y=>Y_menor(0));
+  U3: Funcion_Menor port map      (entradaA=>A, entradaB=>B, seleccion => menor_con_signo, salida=>Y_menor(0));
   Y_menor(31 downto 1)<=31x"0";
   
-  U4: Funcion_desplaza_der port map   (A=>A, B=>B (4 downto 0), con_signo=> desp_con_signo, Y => Y_con_signo);
+  U4: Funcion_desplaza_der port map   (A=>A, B=>B (4 downto 0), con_signo=> desp_con_signo, Y => Y_desp_der);
 
-  U5: FuncionXOR port map (A=>A, B=>B, Y => Y_xor); 
+  U5: FuncionXOR port map (entrada1=>A, entrada2=>B, salida => Y_xor); 
 
-  U6: FuncionOR port map (A=>A, B=>B, Y => Y_or); 
+  U6: FuncionOR port map (entrada1=>A, entrada2=>B, salida => Y_or); 
 
-  U7: FuncionAND port map (A=>A, B=>B, Y => Y_and);
+  U7: FuncionAND port map (entrada1=>A, entrada2=>B, salida => Y_and);
 
   with sel select
   y_sel <= y_suma_resta when "0000" | "0001",
@@ -118,7 +118,7 @@ begin
 
 
 
-  U8: FuncionCero port map (A=> Y_sel, z=>z);
+  U8: FuncionCero port map (entrada=> Y_sel, salida=>z);
       resta <= sel (0) ;
       menor_con_signo <= not sel (1);
       desp_con_signo <= sel (0);
