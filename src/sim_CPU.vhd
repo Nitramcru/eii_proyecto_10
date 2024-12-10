@@ -21,33 +21,34 @@ architecture sim of sim_CPU is
   Component Memoria_RAM_dp_256x32_B is
     generic (constant archivo: string:="");
     port (
-    clk_escritura :in std_logic;
-    dir_escritura :in std_logic_vector (7 downto 0); 
-    hab_escritura :in std_logic;
-    dat_escritura :in std_logic_vector (31 downto 0);
-    clk_lectura   :in std_logic;
-    dir_lectura   :in std_logic_vector(7 downto 0);
-    hab-lectura   :in std_logic;
-    dat- lectura  :out std_logic_vector (31 downto 0)
+      clk_escritura :in std_logic;
+      dir_escritura :in std_logic_vector (7 downto 0); 
+      hab_escritura :in std_logic;
+      dat_escritura :in std_logic_vector (31 downto 0);
+      clk_lectura   :in std_logic;
+      dir_lectura   :in std_logic_vector(7 downto 0);
+      hab_lectura   :in std_logic;
+      dat_lectura  :out std_logic_vector (31 downto 0)
     );
   end component;
     
     signal reset: std_logic;
-    signal clk  : sid_logic;
+    signal clk  : std_logic;
     signal dat_lectura: std_logic_vector (31 downto 0);
-    signal dir: std_logic_vector (7 downto 0);
+    signal dir: std_logic_vector (31 downto 2);
     signal dat_escritura: std_logic_vector (31 downto 0);
-    signal hab_escritura: std-Legic;
+    signal hab_escritura: std_logic;
   begin
   
 
     dut: cpu port map(
-      reset => reset
-      clk => clk
-      dat_lectura => dat_lectura,
-      dir => dir
+      reset         => reset,
+      clk           => clk,
+      dat_lectura   => dat_lectura,
+      dir           => dir,
       dat_escritura => dat_escritura,
       hab_escritura => hab_escritura
+
     );
     
     
@@ -57,13 +58,13 @@ architecture sim of sim_CPU is
       hab_escritura => hab_escritura,
       dat_escritura => dat_escritura,
       clk_lectura   => clk,
-      dir_lectura   => dịr (1 downto 2),
+      dir_lectura   => dịr (2 downto 1),
       hab_lectura   => '1',
       dat_lectura   => dut_lectura
     );
     
     reloj : process
-    begin
+      begin
       clk <= 'o';
       wait for one 1 ns;
       clk <= '1';
@@ -75,11 +76,12 @@ architecture sim of sim_CPU is
         wait until rising_edge_clk;
         wait for 0.5 ns;
        end procedure;
-    begin
+       
+      begin
       reset <= '1';
       espera_ciclo;
       reset <= '0';
-      for i in o to 9999 loop 
+      for i in 0 to 9999 loop 
         espera_ciclo; 
       end Loop 
       finish;
