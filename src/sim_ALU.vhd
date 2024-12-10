@@ -64,7 +64,7 @@ begin
     Sel_tb <= "0011" ;
     wait for 1 ns;
     
-    -- Caso 4: Menor entre A y B
+    -- Caso 4: Menor entre A y B (tiene signo)
     A_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
     B_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
 
@@ -73,7 +73,7 @@ begin
     Sel_tb <= "0101" ;
     wait for 1 ns;
 
-    -- Caso 5: Mayor entre A y B
+    -- Caso 5: Menor entre A y B (no tiene signo)
     A_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
     B_tb <= aleatorio.genera_vector_en_rango(-100,100, 32) ; 
 

@@ -65,15 +65,15 @@ architecture sim of sim_CPU is
     
     reloj : process
       begin
-      clk <= 'o';
+      clk <= '0';
       wait for one 1 ns;
       clk <= '1';
-      wait for 1ns;
+      wait for 1 ns;
     end process;
     
     estimulo: process
       procedure espera_ciclo is 
-        wait until rising_edge_clk;
+        wait until rising_edge(clk);
         wait for 0.5 ns;
        end procedure;
        

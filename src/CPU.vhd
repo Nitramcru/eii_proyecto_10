@@ -26,7 +26,6 @@ architecture arch of CPU is
   Component condicion_branch is
     port (
       funct3: in  std_logic_vector (2 downto 0);
-      
       Z_branch : out std_logic
     );
   end component;
@@ -105,15 +104,15 @@ signal op1, op2: std_logic_vector (31 downto 0);
 begin
   hab_pc <= esc_pc or (branch and (Z xnor Z_branch));
 
-  R_pc: registro 32 port map (
-          clk=> clk,
-          reset=> reset,
+  R_pc: registro32 port map (
+          clk => clk,
+          reset => reset,
           hab => hab_pc,
-          D=> Y,
-          Q=> рс
+          D => Y,
+          Q => pc
       );
   
-  dir <= PC when sel_dir='0' else Y;
+  dir <= pc when sel_dir = '0' else Y;
   
   hab_escritura <= esc_mem;
   dat_escritura <= rs2;
@@ -126,7 +125,7 @@ begin
       Q => pc_instr
   );
 
-  R_instr: registro 32 port map(
+  R_instr: registro32 port map(
       clk => clk,
       reset => '0',
       hab => esc_instr,
@@ -155,14 +154,14 @@ begin
 
 
 u_registros: conjunto_registros port map (
-	clk=>clk
-	dir-1 => instr (19 downto 15),
+	clk => clk,
+	dir_1 => instr (19 downto 15),
 	dir_2 => instr (24 downto 20),
 	dir_escritura => instr (11 downto 7),
 	hab_escritura => esc_reg,
 	dat_escritura => Y,
-	dat-1=> rs1,
-	dat_2=> rs2
+	dat_1 => rs1,
+	dat_2 => rs2
 	);
 
 U_inmediato: valor_inmediato port map (
@@ -172,9 +171,10 @@ U_inmediato: valor_inmediato port map (
 );
 
 
-u_sel_alu: control_alu port_map (
+u_sel_alu: control_alu 
+port_map (
 	funct3 => instr (14 downto 12),
-	funct7_5 =>  instr(30),
+	funct7_5 => instr(30),
 	modo => modo_alu,
 	fn_alu=> sel_alu
 );
@@ -190,128 +190,29 @@ mux_op1: with sel_op1 select
 	op1 <= pc when "00",
 	       pc_instr when "01",
 	       rs1  when others; --10
-
-
 -- end mux_op1
 
 mux_op2: with sel_op2 select
   op1 <= rs2 when "00",
   inmediato when "01",
   32x"4" when others; -- 10
-
 --end mux_op2
 
-u_alv: al
-port map (
-A
-=>
-Op 1,
-B
-→
-0121
-Sel
-⇒
-sel-alv,
-Y_alv,
-Y
-Z
-R-y-alvor: registro 32 port map
-clk clk, reser '0', '1',
-yol,
-D
-→ Y.alv,
-→ Y-aw.r
-);
-mux_y: with
-sel. Y select
-YE dat - lectura when "00",
-Y-ah
-when "01",
-Y-alu-r
-when others;
---
-10
--- end mux-y
-end arch;
-u_alv: al
-port map (
-A
-=>
-Op 1,
-B
-→
-0121
-Sel
-⇒
-sel-alv,
-Y_alv,
-Y
-Z
-R-y-alvor: registro 32 port map
-clk clk, reser '0', '1',
-yol,
-D
-→ Y.alv,
-→ Y-aw.r
-);
-mux_y: with
-sel. Y select
-YE dat - lectura when "00",
-Y-ah
-when "01",
-Y-alu-r
-when others;
---
-10
--- end mux-y
-end arch;
-u_alv: al
-port map (
-A
-=>
-Op 1,
-B
-→
-0121
-Sel
-⇒
-sel-alv,
-Y_alv,
-Y
-Z
-R-y-alvor: registro 32 port map
-clk clk, reser '0', '1',
-yol,
-D
-→ Y.alv,
-→ Y-aw.r
-);
-mux_y: with
-sel. Y select
-YE dat - lectura when "00",
-Y-ah
-when "01",
-Y-alu-r
-when others;
---
-10
--- end mux-y
-end arch;
 
 u_alv: alu port map (
 	A => op1,
 	B => op2,
-	sel =>sel_alu,
-	Y =>Y_alv,
+	sel => sel_alu,
+	Y => Y_alv,
 	Z=> Z
 );
 
-R_y_alu_r: registro 32 port map(
+R_y_alu_r: registro32 port map(
 	clk => clk, 
 	reset => '0',
- 	rob =>'1',
+ 	hab =>'1',
 	D => Y_alu,
-	q => Y_alu_r
+	Q => Y_alu_r
 );
 
 
@@ -320,7 +221,4 @@ mux_y: with sel_Y select
              Y_alu when "01",
            Y_alu_r when others;--10
 -- end mux_y
-end arch;
-
-
 end arch;
