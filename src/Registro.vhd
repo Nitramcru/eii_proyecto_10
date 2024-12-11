@@ -19,7 +19,7 @@ begin
       if reset then
         Q <= 32x"0";
       elsif hab then
-        Q <= 0;
+        Q <= D;
       end if;
     end if;
   end process;

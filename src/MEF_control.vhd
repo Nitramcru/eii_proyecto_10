@@ -5,8 +5,8 @@ entity MEF_control is
   port (
     reset, hab_pc, clk : in  std_logic;
     op : in  std_logic_vector (6 downto 0);
-    esc_pc, branch, sel_dir, esc_men, esc_instr, esc_red : out std_logic;
-    sal_inmediato : out std_logic_vector (2 downto 0);
+    esc_pc, branch, sel_dir, esc_mem, esc_instr, esc_reg : out std_logic;
+    sel_inmediato : out std_logic_vector (2 downto 0);
     modo_alu, sel_op1, sel_op2, sel_y : out std_logic_vector (1 downto 0)
   );
 end MEF_control; 
@@ -49,7 +49,7 @@ begin
         when ESPERA => estado_sig <= CARGA; 
         when CARGA => estado_sig<= DECODIFICA;
         when DECODIFICA => estado_sig <= EJECUTA;
-        when EJECUTA => estado_sig <= ALMACEMA;
+        when EJECUTA => estado_sig <= ALMACENA;
         when ALMACENA => estado_sig <= ESPERA when hab_pc else CARGA;
       end case;
   
@@ -91,7 +91,7 @@ begin
              --dat_lectura* <= mem (RS1 + inmediato)
               sel_inmediato <= "001";
               sel_op1  <= "10";
-              sel_0p2  <= "01";
+              sel_op2  <= "01";
               modo_alu <= "00";
               sel_y    <= "01";
               sel_dir  <= '1';
@@ -124,6 +124,7 @@ begin
               sel_inmediato <= "011"; 
               sel_op1 <="01"; 
               sel_op2 <="01";
+              
             when 7x"67" =>
               -- PC* <= RS1 + inmediato 
               sel_inmediato <= "001"; 
@@ -157,7 +158,7 @@ begin
               sel_y <= "10"; 
               esc_reg <= '1';
 
-            when 7x"13" =>
+            when 7x"23" =>
               -- dat_lectura* <= mem(PC)
       
             when 7x"63" =>

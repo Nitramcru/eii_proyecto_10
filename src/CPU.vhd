@@ -30,7 +30,7 @@ architecture arch of CPU is
     );
   end component;
   
-  Component Conjunto_registros is
+  Component ConjuntodeRegistros_32x32_b is
     port (
     clk,hab_escritura: in std_logic;
     dir_escritura, dir_lectura_1 ,dir_lectura_2 :in std_logic_vector (4 downto 0);
@@ -51,15 +51,15 @@ architecture arch of CPU is
   
   Component MEF_Control is
     port (
-      reset, hab_pc, clk : in  std_logic;
-      
-      esc_pc, branch, sel_dir, esc_men, esc_instr, esc_red : out std_logic;
-      sal_inmediato : out std_logic_vector (2 downto 0);
+      reset, clk, hab_pc : in  std_logic;
+      op : in  std_logic_vector (6 downto 0);
+      esc_pc, branch, sel_dir, esc_mem, esc_instr, esc_reg : out std_logic;
+      sel_inmediato : out std_logic_vector (2 downto 0);
       modo_alu, sel_op1, sel_op2, sel_y : out std_logic_vector (1 downto 0)
     );
   end component;
   
-  Component registro32 is
+  Component Registro is
     port (
       clk : in  std_logic;
       D :   in  std_logic_vector (31 downto 0);
@@ -69,7 +69,7 @@ architecture arch of CPU is
     );
   end component;
   
-  Component valer_inmediato is
+  Component Valor_inmediato is
     port (
       instr : in  std_logic_vector (31 downto 7);
       sel : in  std_logic_vector (2 downto 0);
@@ -95,16 +95,15 @@ Signal rs1, rs2: std_logic_vector (31 downto 0);
 
 --Otras señales
 Signal inmediato: std_logic_vector (31 downto 0); 
-Signal sel_alv: std_logic_vector (3 downto 0); 
+Signal sel_alu: std_logic_vector (3 downto 0); 
 signal z_branch, z, hab_pc : std_logic;
 signal Y_alu, Y: std_logic_vector (31 downto 0);
-
 signal op1, op2: std_logic_vector (31 downto 0);
 
 begin
   hab_pc <= esc_pc or (branch and (Z xnor Z_branch));
 
-  R_pc: registro32 port map (
+  R_pc: Registro port map (
           clk => clk,
           reset => reset,
           hab => hab_pc,
@@ -112,12 +111,12 @@ begin
           Q => pc
       );
   
-  dir <= pc when sel_dir = '0' else Y;
+  dir <= pc(31 downto 2) when sel_dir = '0' else Y(31 downto 2);
   
   hab_escritura <= esc_mem;
   dat_escritura <= rs2;
   
-  R_pc_instr: registro32 port map ( 
+  R_pc_instr: Registro port map ( 
       clk => clk, 
       reset => '0', 
       hab => esc_instr,
@@ -125,7 +124,7 @@ begin
       Q => pc_instr
   );
 
-  R_instr: registro32 port map(
+  R_instr: Registro port map(
       clk => clk,
       reset => '0',
       hab => esc_instr,
@@ -153,25 +152,25 @@ begin
   );
 
 
-u_registros: conjunto_registros port map (
+u_registros: ConjuntodeRegistros_32x32_b port map (
 	clk => clk,
-	dir_1 => instr (19 downto 15),
-	dir_2 => instr (24 downto 20),
+	dir_lectura_1 => instr (19 downto 15),
+	dir_lectura_2 => instr (24 downto 20),
 	dir_escritura => instr (11 downto 7),
 	hab_escritura => esc_reg,
 	dat_escritura => Y,
-	dat_1 => rs1,
-	dat_2 => rs2
+	dat_lectura_1 => rs1,
+	dat_lectura_2 => rs2
 	);
 
-U_inmediato: valor_inmediato port map (
+U_inmediato: Valor_inmediato port map (
 		instr => instr (31 downto 7),
 		sel => sel_inmediato,
 		inmediato => inmediato
 );
 
 
-u_sel_alu: control_alu 
+u_sel_alu: Control_alu 
 port map (
 	funct3 => instr (14 downto 12),
 	funct7_5 => instr(30),
@@ -180,7 +179,7 @@ port map (
 );
 
 
-U_Z_branch: condicion_branch port map(
+U_Z_branch: Condicion_branch port map(
 	    funct3 => instr(14 downto 12),
 	    z_branch => Z_branch
 );
@@ -199,15 +198,15 @@ mux_op2: with sel_op2 select
 --end mux_op2
 
 
-u_alv: alu port map (
+u_alu: alu port map (
 	A => op1,
 	B => op2,
 	sel => sel_alu,
-	Y => Y_alv,
+	Y => Y_alu,
 	Z=> Z
 );
 
-R_y_alu_r: registro32 port map(
+R_y_alu_r: Registro port map(
 	clk => clk, 
 	reset => '0',
  	hab =>'1',

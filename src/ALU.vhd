@@ -116,7 +116,7 @@ begin
 	         y_or         when "1100" | "1101",	
            y_and        when others; -- 1110 1111	
 
-
+  Y <= y_sel;
 
   U8: FuncionCero port map (entrada=> Y_sel, salida=>z);
       resta <= sel (0) ;

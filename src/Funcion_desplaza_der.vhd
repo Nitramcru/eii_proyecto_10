@@ -12,7 +12,7 @@ end Funcion_desplaza_der;
 
 architecture arch of Funcion_desplaza_der is
   signal s16,s8,s4,s2,s1 : std_logic_vector(31 downto 0);
-  signal relleno  : std_logic_vector(3 downto 0);
+  signal relleno  : std_logic_vector(15 downto 0);
   begin
      
    relleno <= (others =>A(31)) when con_signo else (others=> '0');

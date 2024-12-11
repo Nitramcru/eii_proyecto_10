@@ -12,8 +12,8 @@ architecture sim of sim_CPU is
       reset : in  std_logic;
       clk : in  std_logic;
       dat_lectura : in  std_logic_vector (31 downto 0);
-      dir : out std_logic (31 downto 2);
-      dat_escritura : out std_logic (31 downto 0);
+      dir : out std_logic_vector (31 downto 2);
+      dat_escritura : out std_logic_vector (31 downto 0);
       hab_escritura : out std_logic
     );
   end component; -- CPU
@@ -23,7 +23,7 @@ architecture sim of sim_CPU is
     port (
       clk_escritura :in std_logic;
       dir_escritura :in std_logic_vector (7 downto 0); 
-      hab_escritura :in std_logic;
+      hab_escritura :in std_logic_vector (3 downto 0);
       dat_escritura :in std_logic_vector (31 downto 0);
       clk_lectura   :in std_logic;
       dir_lectura   :in std_logic_vector(7 downto 0);
@@ -38,6 +38,7 @@ architecture sim of sim_CPU is
     signal dir: std_logic_vector (31 downto 2);
     signal dat_escritura: std_logic_vector (31 downto 0);
     signal hab_escritura: std_logic;
+    signal hab_escritura_mem: std_logic_vector(3 downto 0);
   begin
   
 
@@ -51,16 +52,17 @@ architecture sim of sim_CPU is
 
     );
     
+    hab_escritura_mem <= (others=>hab_escritura);
     
-    memoria: ram_256x32 generic map ( archivo => "../src/prog_prueba.mem") port map (
+    memoria: Memoria_RAM_dp_256x32_B generic map ( archivo => "../src/prog_prueba.mem") port map (
       clk_escritura => clk,
       dir_escritura => dir (9 downto 2), 
-      hab_escritura => hab_escritura,
+      hab_escritura => hab_escritura_mem,
       dat_escritura => dat_escritura,
       clk_lectura   => clk,
-      dir_lectura   => dir (2 downto 1),
+      dir_lectura   => dir (9 downto 2),
       hab_lectura   => '1',
-      dat_lectura   => dut_lectura
+      dat_lectura   => dat_lectura
     );
     
     reloj : process
