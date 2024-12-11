@@ -61,7 +61,8 @@ begin
         --Valores defecto рос
       esc_pc <= '0';
       branch <= '0';
-      esc_mem <= '0'; 
+      esc_mem <= '0';
+      sel_dir <= '0';
       esc_instr <= '0'; 
       esc_reg <= '0';
       sel_inmediato <= "000";

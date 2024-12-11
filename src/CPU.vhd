@@ -192,7 +192,7 @@ mux_op1: with sel_op1 select
 -- end mux_op1
 
 mux_op2: with sel_op2 select
-  op1 <= rs2 when "00",
+  op2 <= rs2 when "00",
   inmediato when "01",
   32x"4" when others; -- 10
 --end mux_op2

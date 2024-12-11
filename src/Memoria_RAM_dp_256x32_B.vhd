@@ -42,7 +42,7 @@ architecture arch of Memoria_RAM_dp_256x32_B is
         for k in contenido'range loop
           exit when endfile (origen);
           readline(origen,linea);
-          read (linea, contenido(k));
+          hread (linea, contenido(k));
         end loop;
 
       file_close (origen);

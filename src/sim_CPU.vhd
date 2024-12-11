@@ -83,7 +83,7 @@ architecture sim of sim_CPU is
       reset <= '1';
       espera_ciclo;
       reset <= '0';
-      for i in 0 to 9999 loop 
+      for i in 0 to 199 loop 
         espera_ciclo; 
       end loop; 
       finish;
